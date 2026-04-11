@@ -36,3 +36,6 @@ AuthKey_*.p8
 # Environment
 .env
 .env.*
+
+# SourceKit-LSP / xcode-build-server (local only, contains absolute paths)
+buildServer.json
