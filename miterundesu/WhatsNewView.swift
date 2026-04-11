@@ -7,11 +7,15 @@
 
 import SwiftUI
 
-/// v1.1.0の新機能案内ビュー
+/// 新機能案内ビュー
 struct WhatsNewView: View {
     @ObservedObject var settingsManager: SettingsManager
     @ObservedObject private var whatsNewManager = WhatsNewManager.shared
     @Environment(\.dismiss) var dismiss
+
+    private var appVersion: String {
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+    }
 
     var body: some View {
         ZStack {
@@ -19,37 +23,67 @@ struct WhatsNewView: View {
             Color("MainGreen")
                 .ignoresSafeArea()
 
-            VStack(spacing: 30) {
-                Spacer()
+            VStack(spacing: 0) {
+                ScrollView {
+                    VStack(spacing: 24) {
+                        // タイトル
+                        VStack(spacing: 8) {
+                            Text(settingsManager.localizationManager.localizedString("whats_new_title"))
+                                .font(.system(size: 32, weight: .bold))
+                                .foregroundColor(.white)
 
-                // タイトル
-                VStack(spacing: 10) {
-                    Text(settingsManager.localizationManager.localizedString("whats_new_title"))
-                        .font(.system(size: 32, weight: .bold))
-                        .foregroundColor(.white)
+                            Text("v\(appVersion)")
+                                .font(.system(size: 18, weight: .medium))
+                                .foregroundColor(.white.opacity(0.8))
+                        }
+                        .accessibilityElement(children: .combine)
+                        .padding(.top, 60)
 
-                    Text("v1.1.0")
-                        .font(.system(size: 18, weight: .medium))
-                        .foregroundColor(.white.opacity(0.8))
+                        // 機能紹介
+                        Text(settingsManager.localizationManager.localizedString("whats_new_feature_quick_launch_desc"))
+                            .font(.system(size: 16))
+                            .foregroundColor(.white.opacity(0.9))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 30)
+
+                        // ロック画面ウィジェットの追加方法
+                        InstructionSection(
+                            icon: "lock.circle.fill",
+                            title: settingsManager.localizationManager.localizedString("whats_new_lockscreen_title"),
+                            steps: [
+                                settingsManager.localizationManager.localizedString("whats_new_lockscreen_step1"),
+                                settingsManager.localizationManager.localizedString("whats_new_lockscreen_step2"),
+                                settingsManager.localizationManager.localizedString("whats_new_lockscreen_step3"),
+                            ]
+                        )
+
+                        // コントロールセンターの追加方法
+                        InstructionSection(
+                            icon: "switch.2",
+                            title: settingsManager.localizationManager.localizedString("whats_new_controlcenter_title"),
+                            steps: [
+                                settingsManager.localizationManager.localizedString("whats_new_controlcenter_step1"),
+                                settingsManager.localizationManager.localizedString("whats_new_controlcenter_step2"),
+                                settingsManager.localizationManager.localizedString("whats_new_controlcenter_step3"),
+                            ]
+                        )
+
+                        // Siri・ショートカットから起動
+                        InstructionSection(
+                            icon: "mic.circle.fill",
+                            title: settingsManager.localizationManager.localizedString("whats_new_shortcut_title"),
+                            steps: [
+                                settingsManager.localizationManager.localizedString("whats_new_shortcut_step1"),
+                                settingsManager.localizationManager.localizedString("whats_new_shortcut_step2"),
+                                settingsManager.localizationManager.localizedString("whats_new_shortcut_step3"),
+                            ]
+                        )
+
+                        Spacer(minLength: 20)
+                    }
                 }
-                .accessibilityElement(children: .combine)
 
-                Spacer()
-
-                // 新機能リスト
-                VStack(alignment: .leading, spacing: 20) {
-                    // 新機能1: 1倍ボタンの長押し
-                    FeatureRow(
-                        icon: "1.circle.fill",
-                        title: settingsManager.localizationManager.localizedString("whats_new_feature1_title"),
-                        description: settingsManager.localizationManager.localizedString("whats_new_feature1_desc")
-                    )
-                }
-                .padding(.horizontal, 30)
-
-                Spacer()
-
-                // 閉じるボタン
+                // 閉じるボタン（固定）
                 Button(action: {
                     whatsNewManager.markWhatsNewAsSeen()
                     dismiss()
@@ -65,8 +99,57 @@ struct WhatsNewView: View {
                 .accessibilityLabel(settingsManager.localizationManager.localizedString("whats_new_close"))
                 .padding(.horizontal, 30)
                 .padding(.bottom, 50)
+                .padding(.top, 12)
             }
         }
+    }
+}
+
+// MARK: - 手順案内セクション
+
+struct InstructionSection: View {
+    let icon: String
+    let title: String
+    let steps: [String]
+
+    private let stepNumbers = ["❶", "❷", "❸", "❹", "❺"]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            // セクションタイトル
+            HStack(spacing: 10) {
+                Image(systemName: icon)
+                    .font(.system(size: 22))
+                    .foregroundColor(.white)
+                    .accessibilityHidden(true)
+
+                Text(title)
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundColor(.white)
+            }
+
+            // 手順リスト
+            VStack(alignment: .leading, spacing: 10) {
+                ForEach(Array(steps.enumerated()), id: \.offset) { index, step in
+                    HStack(alignment: .top, spacing: 10) {
+                        Text(stepNumbers[index])
+                            .font(.system(size: 16))
+                            .foregroundColor(.white)
+                            .frame(width: 24)
+
+                        Text(step)
+                            .font(.system(size: 15))
+                            .foregroundColor(.white.opacity(0.9))
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+            }
+        }
+        .padding(20)
+        .background(Color.white.opacity(0.15))
+        .cornerRadius(16)
+        .padding(.horizontal, 30)
+        .accessibilityElement(children: .combine)
     }
 }
 
