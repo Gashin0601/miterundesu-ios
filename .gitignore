@@ -8,6 +8,7 @@ DerivedData/
 *.ipa
 *.dSYM.zip
 *.dSYM
+*.pbxproj.backup*
 
 # Xcode - User-specific files
 xcuserdata/
