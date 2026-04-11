@@ -163,12 +163,13 @@ struct ContentView: View {
                 .padding(.bottom, bottomPadding)
 
                 // 説明を見るボタン（横長の白ピル、独立行）
+                // アイコン (book.fill) は一時的に非表示中 — 戻す時は下のImage行のコメントを外す
                 Button(action: {
                     showExplanation = true
                 }) {
                     HStack(spacing: 10) {
-                        Image(systemName: "book.fill")
-                            .font(.system(size: 18, weight: .semibold))
+                        // Image(systemName: "book.fill")
+                        //     .font(.system(size: 18, weight: .semibold))
                         Text(settingsManager.localizationManager.localizedString("explanation"))
                             .font(.system(size: 18, weight: .semibold))
                     }
