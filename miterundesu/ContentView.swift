@@ -111,9 +111,10 @@ struct ContentView: View {
                         .ignoresSafeArea()
 
                     VStack(spacing: 0) {
-                // 上部コントロール（シアター、説明ボタン、設定）
+                // 上部コントロール（シアターモードトグル + ロゴ + 設定アイコン）
+                // 行の高さは設定ボタン(36pt)に律速。ロゴはそれを超えないサイズで中央に配置。
                 HStack(alignment: .center, spacing: 0) {
-                    // 左：シアターモードトグル
+                    // 左：シアターモードトグル（ピル型、文字なし）
                     TheaterModeToggle(
                         isTheaterMode: $settingsManager.isTheaterMode,
                         onToggle: {
@@ -126,53 +127,31 @@ struct ContentView: View {
                     .opacity(shouldShowUI ? 1 : 0)
                     .accessibilityHidden(!shouldShowUI)
 
-                    Spacer()
+                    Spacer(minLength: 8)
 
-                    // 中央：説明を見るボタン
-                    Button(action: {
-                        showExplanation = true
-                    }) {
-                        HStack(spacing: 6) {
-                            Image(systemName: "book.fill")
-                                .font(.system(size: 14))
-                            Text(settingsManager.localizationManager.localizedString("explanation"))
-                                .font(.system(size: 14, weight: .medium))
-                        }
-                        .foregroundColor(settingsManager.isTheaterMode ? Color("TheaterOrange") : Color("MainGreen"))
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                        .background(
-                            RoundedRectangle(cornerRadius: 20)
-                                .fill(Color.white)
-                        )
-                    }
-                    .accessibilityLabel(settingsManager.localizationManager.localizedString("explanation"))
-                    .spotlight(id: "explanation_button")
-                    .opacity(shouldShowUI ? 1 : 0)
-                    .accessibilityHidden(!shouldShowUI)
+                    // 中央：ミテルンデスロゴ（小さめ、行の縦幅は広げない）
+                    Image("Logo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxHeight: 22)
+                        .accessibilityHidden(true)
+                        .opacity(shouldShowUI ? 1 : 0)
 
-                    Spacer()
+                    Spacer(minLength: 8)
 
-                    // 右：設定ボタン
+                    // 右：設定ボタン（アイコンのみ、文字なし）
+                    // アイコン色は背景ピル(white 0.35)の上でさらに白を重ねた淡い緑/オレンジになるよう設計
                     Button(action: {
                         showSettings = true
                     }) {
-                        HStack(spacing: 6) {
-                            Image(systemName: "gearshape.fill")
-                                .font(.system(size: 16))
-                                .foregroundColor(.white)
-
-                            Text(settingsManager.localizationManager.localizedString("settings"))
-                                .font(.system(size: 13, weight: .medium))
-                                .foregroundColor(.white)
-                                .lineLimit(1)
-                        }
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .fill(Color.white.opacity(0.25))
-                        )
+                        Image(systemName: "gearshape.fill")
+                            .font(.system(size: 22, weight: .semibold))
+                            .foregroundColor(Color.white.opacity(0.55))
+                            .frame(width: 52, height: 36)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color.white.opacity(0.35))
+                            )
                     }
                     .padding(.trailing, horizontalPadding)
                     .accessibilityLabel(settingsManager.localizationManager.localizedString("settings"))
@@ -183,7 +162,31 @@ struct ContentView: View {
                 .padding(.top, topPadding)
                 .padding(.bottom, bottomPadding)
 
-                // ヘッダー部分（無限スクロールとロゴ）
+                // 説明を見るボタン（横長の白ピル、独立行）
+                Button(action: {
+                    showExplanation = true
+                }) {
+                    HStack(spacing: 10) {
+                        Image(systemName: "book.fill")
+                            .font(.system(size: 18, weight: .semibold))
+                        Text(settingsManager.localizationManager.localizedString("explanation"))
+                            .font(.system(size: 18, weight: .semibold))
+                    }
+                    .foregroundColor(settingsManager.isTheaterMode ? Color("TheaterOrange") : Color("MainGreen"))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(
+                        Capsule()
+                            .fill(Color.white)
+                    )
+                }
+                .padding(.horizontal, horizontalPadding)
+                .accessibilityLabel(settingsManager.localizationManager.localizedString("explanation"))
+                .spotlight(id: "explanation_button")
+                .opacity(shouldShowUI ? 1 : 0)
+                .accessibilityHidden(!shouldShowUI)
+
+                // ヘッダー部分（無限スクロールテキストのみ）
                 HeaderView(settingsManager: settingsManager)
                     .opacity(shouldShowUI ? 1 : 0)
                     .accessibilityHidden(!shouldShowUI)
@@ -516,22 +519,13 @@ struct HeaderView: View {
     @ObservedObject private var onboardingManager = OnboardingManager.shared
 
     var body: some View {
-        VStack(spacing: 14) {
-            // 無限スクロールテキスト
-            InfiniteScrollingText(text: settingsManager.scrollingMessage)
-                .frame(height: 32)
-                .clipped()
-                .accessibilityElement(children: .ignore) // 内部の繰り返し要素を無視
-                .accessibilityLabel("スクロールメッセージ、\(settingsManager.scrollingMessage)") // 一度だけ読み上げ
-                .spotlight(id: "scrolling_message") // spotlightは最後に適用（accessibilityHiddenが有効になるように）
-
-            // ロゴ
-            Image("Logo")
-                .resizable()
-                .scaledToFit()
-                .frame(height: 28)
-                .accessibilityHidden(true) // ロゴは常にVoiceOverから非表示
-        }
+        // 無限スクロールテキストのみ（v1.3.0でロゴは廃止）
+        InfiniteScrollingText(text: settingsManager.scrollingMessage)
+            .frame(height: 32)
+            .clipped()
+            .accessibilityElement(children: .ignore) // 内部の繰り返し要素を無視
+            .accessibilityLabel("スクロールメッセージ、\(settingsManager.scrollingMessage)") // 一度だけ読み上げ
+            .spotlight(id: "scrolling_message") // spotlightは最後に適用（accessibilityHiddenが有効になるように）
     }
 }
 
@@ -582,111 +576,42 @@ struct InfiniteScrollingText: View {
 }
 
 // MARK: - Theater Mode Toggle
+/// シアターモード切替用のピル型トグル。
+/// 通常時: トラック上にオレンジ（TheaterOrange）の円が左寄せで表示される。
+/// シアターモード時: トラック上に緑（MainGreen）の円が右寄せで表示される。
+/// 文字は表示せず、アクセシビリティラベルで状態を伝える。
 struct TheaterModeToggle: View {
     @Binding var isTheaterMode: Bool
     let onToggle: () -> Void
     @ObservedObject var settingsManager: SettingsManager
+
+    private let trackWidth: CGFloat = 64
+    private let trackHeight: CGFloat = 30
+    private let thumbSize: CGFloat = 24
+    private let thumbInset: CGFloat = 3
 
     var body: some View {
         Button(action: {
             isTheaterMode.toggle()
             onToggle()
         }) {
-            HStack(spacing: 5) {
-                // カスタムアイコン
-                TheaterModeIcon(isTheaterMode: isTheaterMode)
-                    .frame(width: 18, height: 18)
+            ZStack(alignment: .leading) {
+                // トラック（ピル型背景）
+                Capsule()
+                    .fill(Color.white.opacity(0.35))
+                    .frame(width: trackWidth, height: trackHeight)
 
-                // テキスト
-                Text(settingsManager.localizationManager.localizedString("theater_mode"))
-                    .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(.white)
-                    .lineLimit(1)
+                // サム（円インジケーター）
+                Circle()
+                    .fill(isTheaterMode ? Color("MainGreen") : Color("TheaterOrange"))
+                    .frame(width: thumbSize, height: thumbSize)
+                    .offset(x: isTheaterMode ? (trackWidth - thumbSize - thumbInset) : thumbInset)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 6)
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.white.opacity(0.25))
-            )
+            .animation(.easeInOut(duration: 0.2), value: isTheaterMode)
         }
         .accessibilityLabel(settingsManager.localizationManager.localizedString(isTheaterMode ? "switch_to_normal_mode" : "switch_to_theater_mode"))
         .accessibilityHint(settingsManager.localizationManager.localizedString(isTheaterMode ? "switch_to_normal_hint" : "switch_to_theater_hint"))
-    }
-}
-
-// MARK: - Theater Mode Icon
-struct TheaterModeIcon: View {
-    let isTheaterMode: Bool
-
-    var body: some View {
-        ZStack {
-            // 白い円の背景
-            Circle()
-                .fill(Color.white)
-
-            // 左上から右下の対角線で分割
-            GeometryReader { geometry in
-                let size = geometry.size.width
-
-                // 左上半分（通常時：オレンジ、シアター時：緑）
-                Path { path in
-                    path.move(to: CGPoint(x: 0, y: 0))
-                    path.addLine(to: CGPoint(x: size, y: 0))
-                    path.addLine(to: CGPoint(x: 0, y: size))
-                    path.addLine(to: CGPoint(x: 0, y: 0))
-                }
-                .fill(isTheaterMode ? Color("MainGreen") : Color("TheaterOrange"))
-
-                // 右下半分（通常時：緑、シアター時：オレンジ）
-                Path { path in
-                    path.move(to: CGPoint(x: size, y: 0))
-                    path.addLine(to: CGPoint(x: size, y: size))
-                    path.addLine(to: CGPoint(x: 0, y: size))
-                    path.addLine(to: CGPoint(x: size, y: 0))
-                }
-                .fill(isTheaterMode ? Color("TheaterOrange") : Color("MainGreen"))
-
-                // 左上から右下への白い境界線
-                Path { path in
-                    path.move(to: CGPoint(x: 0, y: 0))
-                    path.addLine(to: CGPoint(x: size, y: size))
-                }
-                .stroke(Color.white, lineWidth: 1.2)
-            }
-            .clipShape(Circle())
-
-            // 中央にシンボルを表示（白い縁取り付き）
-            ZStack {
-                // 白い縁取り
-                Image(systemName: isTheaterMode ? "moon.fill" : "sun.max.fill")
-                    .font(.system(size: 8, weight: .bold))
-                    .foregroundColor(.white)
-                    .offset(x: -0.4, y: 0)
-                Image(systemName: isTheaterMode ? "moon.fill" : "sun.max.fill")
-                    .font(.system(size: 8, weight: .bold))
-                    .foregroundColor(.white)
-                    .offset(x: 0.4, y: 0)
-                Image(systemName: isTheaterMode ? "moon.fill" : "sun.max.fill")
-                    .font(.system(size: 8, weight: .bold))
-                    .foregroundColor(.white)
-                    .offset(x: 0, y: -0.4)
-                Image(systemName: isTheaterMode ? "moon.fill" : "sun.max.fill")
-                    .font(.system(size: 8, weight: .bold))
-                    .foregroundColor(.white)
-                    .offset(x: 0, y: 0.4)
-
-                // メインアイコン
-                Image(systemName: isTheaterMode ? "moon.fill" : "sun.max.fill")
-                    .font(.system(size: 8, weight: .bold))
-                    .foregroundColor(isTheaterMode ? Color("TheaterOrange") : Color("MainGreen"))
-            }
-            .accessibilityHidden(true)
-
-            // 円全体に薄い枠線
-            Circle()
-                .stroke(Color.white.opacity(0.3), lineWidth: 0.8)
-        }
+        .accessibilityAddTraits(.isButton)
     }
 }
 
