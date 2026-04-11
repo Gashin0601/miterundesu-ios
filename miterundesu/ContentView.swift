@@ -188,10 +188,11 @@ struct ContentView: View {
                 .accessibilityHidden(!shouldShowUI)
 
                 // ヘッダー部分（無限スクロールテキストのみ）
+                // 説明を見るボタンとの間に適度な余白を確保（詰めすぎを回避）
                 HeaderView(settingsManager: settingsManager)
                     .opacity(shouldShowUI ? 1 : 0)
                     .accessibilityHidden(!shouldShowUI)
-                    .padding(.top, topPadding * 0.5)
+                    .padding(.top, 12)
 
                 // カメラプレビュー領域
                 Group {
