@@ -129,13 +129,13 @@ struct ContentView: View {
 
                     Spacer(minLength: 8)
 
-                    // 中央：ミテルンデスロゴ（小さめ、行の縦幅は広げない）
-                    Image("Logo")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxHeight: 22)
-                        .accessibilityHidden(true)
-                        .opacity(shouldShowUI ? 1 : 0)
+                    // 中央：ミテルンデスロゴ（一時的に非表示中 — 戻す時は下のImageブロックのコメントを外す）
+                    // Image("Logo")
+                    //     .resizable()
+                    //     .scaledToFit()
+                    //     .frame(maxHeight: 22)
+                    //     .accessibilityHidden(true)
+                    //     .opacity(shouldShowUI ? 1 : 0)
 
                     Spacer(minLength: 8)
 
