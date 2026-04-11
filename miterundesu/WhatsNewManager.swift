@@ -12,7 +12,7 @@ class WhatsNewManager: ObservableObject {
     static let shared = WhatsNewManager()
 
     private let lastSeenVersionKey = "lastSeenAppVersion"
-    private let currentVersion = "1.1.0"
+    private let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
 
     @Published var shouldShowWhatsNew: Bool = false
 
@@ -27,8 +27,8 @@ class WhatsNewManager: ObservableObject {
         // 初回起動の場合（lastSeenVersionがnil）は新機能案内を表示しない
         // 既存ユーザーがアップデートした場合のみ表示
         if let lastVersion = lastSeenVersion {
-            // バージョンが異なる場合、かつ1.1.0へのアップデートの場合
-            if lastVersion != currentVersion && currentVersion == "1.1.0" {
+            // バージョンが異なる場合、かつ新しいバージョンへのアップデートの場合
+            if lastVersion != currentVersion {
                 shouldShowWhatsNew = true
             }
         } else {
