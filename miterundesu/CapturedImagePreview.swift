@@ -25,7 +25,6 @@ struct CapturedImagePreview: View {
     @State private var zoomTimer: Timer?
     @State private var zoomStartTime: Date?
     @State private var continuousZoomCount: Int = 0
-    @State private var showSettings = false
     @State private var showExplanation = false
     @State private var savedScaleBeforeReset: CGFloat? = nil
     @State private var savedOffsetBeforeReset: CGSize? = nil
@@ -422,26 +421,21 @@ struct CapturedImagePreview: View {
 
                         Spacer()
 
-                        // 右：設定ボタン
+                        // 右：閉じるボタン（丸バツ）
                         Button(action: {
-                            showSettings = true
+                            dismiss()
                         }) {
-                            HStack(spacing: 6) {
-                                Image(systemName: "gearshape.fill")
-                                    .font(.system(size: 16))
-                                Text(settingsManager.localizationManager.localizedString("settings"))
-                                    .font(.system(size: 13, weight: .medium))
+                            ZStack {
+                                Circle()
+                                    .fill(Color.white)
+                                    .frame(width: 36, height: 36)
+                                Image(systemName: "xmark")
+                                    .font(.system(size: 14, weight: .bold))
+                                    .foregroundColor(.black)
                             }
-                            .foregroundColor(.white)
-                            .padding(.horizontal, horizontalPadding * 0.6)
-                            .padding(.vertical, verticalPadding * 0.6)
-                            .background(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color.white.opacity(0.25))
-                            )
                         }
                         .padding(.trailing, horizontalPadding)
-                        .accessibilityLabel(settingsManager.localizationManager.localizedString("settings"))
+                        .accessibilityLabel(settingsManager.localizationManager.localizedString("close"))
                     }
                     .padding(.top, verticalPadding)
 
@@ -506,9 +500,6 @@ struct CapturedImagePreview: View {
                 .animation(.easeInOut(duration: 0.3), value: isImageDeleted)
             }
             }
-        }
-        .fullScreenCover(isPresented: $showSettings) {
-            SettingsView(settingsManager: settingsManager, isTheaterMode: false)
         }
         .fullScreenCover(isPresented: $showExplanation) {
             ExplanationView(settingsManager: settingsManager)

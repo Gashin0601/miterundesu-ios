@@ -45,24 +45,18 @@ struct ExplanationView: View {
 
                         Spacer(minLength: 8)
 
-                        // 右：閉じるボタン
+                        // 右：閉じるボタン（丸バツ）
                         Button(action: {
                             dismiss()
                         }) {
-                            HStack(spacing: 6) {
-                                Image(systemName: "xmark.circle.fill")
-                                    .font(.system(size: 16))
-                                    .accessibilityHidden(true)
-                                Text(settingsManager.localizationManager.localizedString("close"))
-                                    .font(.system(size: 13, weight: .medium))
+                            ZStack {
+                                Circle()
+                                    .fill(Color.white)
+                                    .frame(width: 36, height: 36)
+                                Image(systemName: "xmark")
+                                    .font(.system(size: 14, weight: .bold))
+                                    .foregroundColor(.black)
                             }
-                            .foregroundColor(.white)
-                            .padding(.horizontal, horizontalPadding * 0.6)
-                            .padding(.vertical, 6)
-                            .background(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color.white.opacity(0.25))
-                            )
                         }
                         .accessibilityLabel(settingsManager.localizationManager.localizedString("close"))
                         .padding(.trailing, horizontalPadding)
