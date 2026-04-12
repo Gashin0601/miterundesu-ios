@@ -24,13 +24,54 @@ struct SettingsView: View {
     @State private var showingResetConfirmation = false
 
     var body: some View {
-        NavigationView {
+        GeometryReader { geometry in
+            let screenWidth = geometry.size.width
+            let screenHeight = geometry.size.height
+            let horizontalPadding = screenWidth * 0.041
+            let topPadding = screenHeight * 0.009
+            let bottomPadding = screenHeight * 0.009
+
             ZStack {
-                // 背景色
                 (isTheaterMode ? Color("TheaterOrange") : Color("MainGreen"))
                     .ignoresSafeArea()
 
-                Form {
+                VStack(spacing: 0) {
+                    // 上部ヘッダー（ContentView / ExplanationView と統一）
+                    ZStack {
+                        Image("Logo")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxHeight: 22)
+                            .accessibilityHidden(true)
+
+                        HStack {
+                            TheaterModeToggle(
+                                isTheaterMode: $settingsManager.isTheaterMode,
+                                onToggle: {},
+                                settingsManager: settingsManager
+                            )
+                            .padding(.leading, horizontalPadding)
+
+                            Spacer()
+
+                            Button(action: { dismiss() }) {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color.white)
+                                        .frame(width: 44, height: 44)
+                                    Image(systemName: "xmark")
+                                        .font(.system(size: 17, weight: .bold))
+                                        .foregroundColor(.black)
+                                }
+                            }
+                            .accessibilityLabel(settingsManager.localizationManager.localizedString("close"))
+                            .padding(.trailing, horizontalPadding)
+                        }
+                    }
+                    .padding(.top, topPadding)
+                    .padding(.bottom, bottomPadding)
+
+                    Form {
                     // 最大拡大率設定
                     Section(header: Text(settingsManager.localizationManager.localizedString("camera_settings")).foregroundColor(.white)) {
                         VStack(alignment: .leading, spacing: 12) {
@@ -470,32 +511,9 @@ struct SettingsView: View {
                 .scrollContentBackground(.hidden)
                 .background(Color.clear)
                 .listStyle(.plain)
-            }
-            .navigationTitle(settingsManager.localizationManager.localizedString("settings"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    TheaterModeToggle(
-                        isTheaterMode: $settingsManager.isTheaterMode,
-                        onToggle: {},
-                        settingsManager: settingsManager
-                    )
-                }
-
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        dismiss()
-                    }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: UIScreen.main.bounds.width * 0.07))
-                            .foregroundColor(.white)
-                    }
-                }
-            }
-            .toolbarBackground(isTheaterMode ? Color("TheaterOrange") : Color("MainGreen"), for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
-        }
-        .navigationViewStyle(.stack)
+                } // VStack
+            } // ZStack
+        } // GeometryReader
         .preferredColorScheme(.dark)
         .sheet(isPresented: $showingPressModeLogin) {
             PressModeLoginView()
