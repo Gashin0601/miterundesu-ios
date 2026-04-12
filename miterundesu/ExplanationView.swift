@@ -72,31 +72,73 @@ struct ExplanationView: View {
                     .padding(.bottom, 8)
 
             ScrollView {
-                VStack(alignment: .leading, spacing: 32) {
+                VStack(alignment: .leading, spacing: 24) {
                     // スペーサー（ヘッダー分）
                     Spacer()
-                        .frame(height: 8)
+                        .frame(height: 16)
 
                     // タイトル
-                    Text("撮影しているわけではなく、\n拡大して見ているんです。")
-                        .font(.system(size: 24, weight: .bold))
+                    Text("撮ってないよ、\n見てるだけ")
+                        .font(.system(size: 32, weight: .bold))
                         .foregroundColor(.white)
                         .multilineTextAlignment(.leading)
+                        .lineSpacing(4)
+                        .padding(.horizontal, contentPadding)
+                        .padding(.bottom, 4)
+
+                    // 区切り線
+                    SectionDivider()
                         .padding(.horizontal, contentPadding)
 
-                    // 本文
-                    Text(bodyText)
-                        .font(.system(size: 16))
-                        .foregroundColor(.white.opacity(0.9))
-                        .lineSpacing(8)
-                        .padding(.horizontal, contentPadding)
+                    // セクション1: アプリの概要
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("アプリの概要")
+                            .font(.system(size: 17, weight: .bold))
+                            .foregroundColor(.white)
 
-                    // イラストセクション
-                    if settingsManager.isTheaterMode {
-                        TheaterModeIllustrations()
-                    } else {
-                        NormalModeIllustrations()
+                        Text("本アプリは、撮影や録画ではなく、拡大鏡としてスマホを使うためのアプリです。\n\n弱視や老眼など日常的に見えづらさを感じる人が、安心して「見ること」をサポートします。")
+                            .font(.system(size: 14))
+                            .foregroundColor(.white.opacity(0.9))
+                            .lineSpacing(6)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
+                    .padding(.horizontal, contentPadding)
+
+                    // 区切り線
+                    SectionDivider()
+                        .padding(.horizontal, contentPadding)
+
+                    // セクション2: 実際の機能
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("実際の機能")
+                            .font(.system(size: 17, weight: .bold))
+                            .foregroundColor(.white)
+
+                        VStack(alignment: .leading, spacing: 8) {
+                            ExplanationBullet(text: "最大200倍の拡大が可能")
+                            ExplanationBullet(text: "撮影した画像は10分後に自動で削除")
+                            ExplanationBullet(text: "スクリーンショットや画面録画は不可能")
+                        }
+                    }
+                    .padding(.horizontal, contentPadding)
+
+                    // 区切り線
+                    SectionDivider()
+                        .padding(.horizontal, contentPadding)
+
+                    // セクション3: 背景
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("背景")
+                            .font(.system(size: 17, weight: .bold))
+                            .foregroundColor(.white)
+
+                        Text("最近のコンビニやスーパーでは、店内撮影を禁止する貼り紙が増えてきています。\n\n見るためにスマホを使っているときに撮影を疑われることも…\n\nそんな時に安心して「見てるんです」と説明できる。\nミテルンデスはそのために作成したアプリです。")
+                            .font(.system(size: 14))
+                            .foregroundColor(.white.opacity(0.9))
+                            .lineSpacing(6)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .padding(.horizontal, contentPadding)
 
                     Spacer(minLength: 40)
 
@@ -147,107 +189,30 @@ struct ExplanationView: View {
         }
     }
 
-    private var bodyText: String {
-        if settingsManager.isTheaterMode {
-            return "ミテルンデスは、撮影や録画を目的とせず、\"見るためだけ\"に使えるカメラアプリです。\n映画館・美術館・博物館など、撮影が禁止されている場所でも、安心して\"拡大して見る\"ことができます。\n\nアプリでは写真・動画の撮影は完全に不可。\nさらに、スクリーンショットや画面収録も無効化されており、安心してご利用いただけます。"
-        } else {
-            return "ミテルンデスは、撮影や録画ではなく、拡大鏡としてスマートフォンを使うためのアプリです。\n弱視や老眼など、見えづらさを感じる方が安心して日常の中で「見る」ことをサポートします。\n撮影した画像は10分後に自動で削除され、スクリーンショットや画面収録もできません。"
-        }
+}
+
+// MARK: - Section Divider
+struct SectionDivider: View {
+    var body: some View {
+        Rectangle()
+            .fill(Color.white.opacity(0.25))
+            .frame(height: 1)
     }
 }
 
-// MARK: - Normal Mode Illustrations
-struct NormalModeIllustrations: View {
-    var body: some View {
-        VStack(spacing: 32) {
-            // 3つのアイコンを横に並べる
-            HStack(spacing: 30) {
-                Image("icon-white-cane")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 80, height: 80)
-
-                Image("icon-elderly")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 80, height: 80)
-
-                Image("icon-wheelchair")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 80, height: 80)
-            }
-            .padding(.horizontal, 24)
-
-            // 各アイコンの説明
-            VStack(spacing: 24) {
-                ExplanationItem(
-                    subtitle: "見えづらい方（弱視・老眼）",
-                    description: "コンビニやスーパーでは、店内撮影を禁止する貼り紙が増えてきています。\nしかし、商品をしっかり確認するためには、スマートフォンで\"拡大して見る\"ことが必要な場面があります。"
-                )
-
-                ExplanationItem(
-                    subtitle: "車椅子ユーザー",
-                    description: "棚が高く、商品が目の高さに入らないことがあります。\nそのため、手を伸ばして写真を撮り、拡大して確認する必要があるのです。"
-                )
-            }
-            .padding(.horizontal, 24)
-        }
-    }
-}
-
-// MARK: - Theater Mode Illustrations
-struct TheaterModeIllustrations: View {
-    var body: some View {
-        VStack(spacing: 32) {
-            // 2つのアイコンを横に並べる
-            HStack(spacing: 40) {
-                Image("building-theater")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 100, height: 100)
-
-                Image("building-museum")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 100, height: 100)
-            }
-            .padding(.horizontal, 24)
-
-            // 各アイコンの説明
-            VStack(spacing: 24) {
-                ExplanationItem(
-                    subtitle: "映画館",
-                    description: "字幕や表情が見えづらいとき、スマホのカメラで必要な部分だけ少し拡大して鑑賞できます。\n画面の光は最小限に抑えられるため、周囲の迷惑にならず映画を楽しめます。"
-                )
-
-                ExplanationItem(
-                    subtitle: "美術館・博物館",
-                    description: "展示物のそばにある細かな文字や説明プレートを拡大して読みやすくできます。\n照明が暗い展示室でも、拡大表示によって文字をはっきり確認できます。"
-                )
-            }
-            .padding(.horizontal, 24)
-        }
-    }
-}
-
-// MARK: - Explanation Item (サブタイトルと説明文)
-struct ExplanationItem: View {
-    let subtitle: String
-    let description: String
+// MARK: - Explanation Bullet
+struct ExplanationBullet: View {
+    let text: String
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(subtitle)
-                .font(.system(size: 16, weight: .bold))
-                .foregroundColor(.white)
-
-            Text(description)
+        HStack(alignment: .top, spacing: 6) {
+            Text("・")
                 .font(.system(size: 14))
                 .foregroundColor(.white.opacity(0.9))
-                .lineSpacing(6)
+            Text(text)
+                .font(.system(size: 14))
+                .foregroundColor(.white.opacity(0.9))
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
