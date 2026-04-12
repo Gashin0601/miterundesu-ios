@@ -428,9 +428,9 @@ struct CapturedImagePreview: View {
                             ZStack {
                                 Circle()
                                     .fill(Color.white)
-                                    .frame(width: 36, height: 36)
+                                    .frame(width: 44, height: 44)
                                 Image(systemName: "xmark")
-                                    .font(.system(size: 14, weight: .bold))
+                                    .font(.system(size: 17, weight: .bold))
                                     .foregroundColor(.black)
                             }
                         }
