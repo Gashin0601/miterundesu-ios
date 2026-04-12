@@ -112,24 +112,10 @@ struct ContentView: View {
 
                     VStack(spacing: 0) {
                 // 上部コントロール（シアターモードトグル + ロゴ + 設定アイコン）
-                // 行の高さは設定ボタン(36pt)に律速。ロゴはそれを超えないサイズで中央に配置。
-                HStack(alignment: .center, spacing: 0) {
-                    // 左：シアターモードトグル（ピル型、文字なし）
-                    TheaterModeToggle(
-                        isTheaterMode: $settingsManager.isTheaterMode,
-                        onToggle: {
-                            handleTheaterModeChange()
-                        },
-                        settingsManager: settingsManager
-                    )
-                    .padding(.leading, horizontalPadding)
-                    .spotlight(id: "theater_toggle")
-                    .opacity(shouldShowUI ? 1 : 0)
-                    .accessibilityHidden(!shouldShowUI)
-
-                    Spacer(minLength: 8)
-
-                    // 中央：ミテルンデスロゴ（小さめ、行の縦幅は広げない）
+                // ZStack構成: ロゴを画面中央に固定、ボタンはHStackで左右端に配置
+                // → トグルと設定ボタンの幅差に関わらずロゴが常に画面中央になる
+                ZStack {
+                    // 中央：ミテルンデスロゴ（画面中央に固定配置）
                     Image("Logo")
                         .resizable()
                         .scaledToFit()
@@ -137,27 +123,37 @@ struct ContentView: View {
                         .accessibilityHidden(true)
                         .opacity(shouldShowUI ? 1 : 0)
 
-                    Spacer(minLength: 8)
+                    HStack {
+                        // 左：シアターモードトグル（ピル型、文字なし）
+                        TheaterModeToggle(
+                            isTheaterMode: $settingsManager.isTheaterMode,
+                            onToggle: {
+                                handleTheaterModeChange()
+                            },
+                            settingsManager: settingsManager
+                        )
+                        .padding(.leading, horizontalPadding)
+                        .spotlight(id: "theater_toggle")
+                        .opacity(shouldShowUI ? 1 : 0)
+                        .accessibilityHidden(!shouldShowUI)
 
-                    // 右：設定ボタン（アイコンのみ、文字なし）
-                    // アイコン色は背景ピル(white 0.35)の上でさらに白を重ねた淡い緑/オレンジになるよう設計
-                    Button(action: {
-                        showSettings = true
-                    }) {
-                        Image(systemName: "gearshape.fill")
-                            .font(.system(size: 22, weight: .semibold))
-                            .foregroundColor(Color.white.opacity(0.55))
-                            .frame(width: 52, height: 36)
-                            .background(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .fill(Color.white.opacity(0.35))
-                            )
+                        Spacer()
+
+                        // 右：設定ボタン（アイコンのみ、背景なし）
+                        Button(action: {
+                            showSettings = true
+                        }) {
+                            Image(systemName: "gearshape.fill")
+                                .font(.system(size: 22, weight: .medium))
+                                .foregroundColor(.white.opacity(0.8))
+                                .frame(width: 44, height: 44)
+                        }
+                        .padding(.trailing, horizontalPadding)
+                        .accessibilityLabel(settingsManager.localizationManager.localizedString("settings"))
+                        .spotlight(id: "settings_button")
+                        .opacity(shouldShowUI ? 1 : 0)
+                        .accessibilityHidden(!shouldShowUI)
                     }
-                    .padding(.trailing, horizontalPadding)
-                    .accessibilityLabel(settingsManager.localizationManager.localizedString("settings"))
-                    .spotlight(id: "settings_button")
-                    .opacity(shouldShowUI ? 1 : 0)
-                    .accessibilityHidden(!shouldShowUI)
                 }
                 .padding(.top, topPadding)
                 .padding(.bottom, bottomPadding)
