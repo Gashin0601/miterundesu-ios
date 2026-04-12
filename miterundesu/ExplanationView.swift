@@ -100,7 +100,7 @@ struct ExplanationView: View {
                     SectionDivider()
                         .padding(.horizontal, contentPadding)
 
-                    // セクション2: 実際の機能
+                    // セクション2: 実際の機能（モード別）
                     VStack(alignment: .leading, spacing: 12) {
                         Text("実際の機能")
                             .font(.system(size: 17, weight: .bold))
@@ -108,7 +108,11 @@ struct ExplanationView: View {
 
                         VStack(alignment: .leading, spacing: 8) {
                             ExplanationBullet(text: "最大200倍の拡大が可能")
-                            ExplanationBullet(text: "撮影した画像は10分後に自動で削除")
+                            if settingsManager.isTheaterMode {
+                                ExplanationBullet(text: "撮影は一切行うことができません")
+                            } else {
+                                ExplanationBullet(text: "撮影した画像は10分後に自動で削除")
+                            }
                             ExplanationBullet(text: "スクリーンショットや画面録画は不可能")
                         }
                     }
@@ -118,19 +122,34 @@ struct ExplanationView: View {
                     SectionDivider()
                         .padding(.horizontal, contentPadding)
 
-                    // セクション3: 背景
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("背景")
-                            .font(.system(size: 17, weight: .bold))
-                            .foregroundColor(.white)
+                    // セクション3: 背景（通常） / 使用場面（シアター）
+                    if settingsManager.isTheaterMode {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("使用場面")
+                                .font(.system(size: 17, weight: .bold))
+                                .foregroundColor(.white)
 
-                        Text("最近のコンビニやスーパーでは、店内撮影を禁止する貼り紙が増えてきています。\n\n見るためにスマホを使っているときに撮影を疑われることも…\n\nそんな時に安心して「見てるんです」と説明できる。\nミテルンデスはそのために作成したアプリです。")
-                            .font(.system(size: 14))
-                            .foregroundColor(.white.opacity(0.9))
-                            .lineSpacing(6)
-                            .fixedSize(horizontal: false, vertical: true)
+                            Text("美術館や博物館で、展示物のそばにある細かな文字や説明プレートを拡大して読みやすくできます。\n\nシアターモードでは一時的な撮影も禁止されるので、撮影していないことを証明しやすくなります。\n\nその他、撮影禁止の場所での利用や導入についても、今後進めて行く予定です。")
+                                .font(.system(size: 14))
+                                .foregroundColor(.white.opacity(0.9))
+                                .lineSpacing(6)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        .padding(.horizontal, contentPadding)
+                    } else {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("背景")
+                                .font(.system(size: 17, weight: .bold))
+                                .foregroundColor(.white)
+
+                            Text("最近のコンビニやスーパーでは、店内撮影を禁止する貼り紙が増えてきています。\n\n見るためにスマホを使っているときに撮影を疑われることも…\n\nそんな時に安心して「見てるんです」と説明できる。\nミテルンデスはそのために作成したアプリです。")
+                                .font(.system(size: 14))
+                                .foregroundColor(.white.opacity(0.9))
+                                .lineSpacing(6)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        .padding(.horizontal, contentPadding)
                     }
-                    .padding(.horizontal, contentPadding)
 
                     Spacer(minLength: 40)
 
