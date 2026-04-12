@@ -420,22 +420,6 @@ struct CapturedImagePreview: View {
                         .accessibilityLabel(settingsManager.localizationManager.localizedString("explanation"))
 
                         Spacer()
-
-                        // 右：閉じるボタン（丸バツ）
-                        Button(action: {
-                            dismiss()
-                        }) {
-                            ZStack {
-                                Circle()
-                                    .fill(Color.white)
-                                    .frame(width: 44, height: 44)
-                                Image(systemName: "xmark")
-                                    .font(.system(size: 17, weight: .bold))
-                                    .foregroundColor(.black)
-                            }
-                        }
-                        .padding(.trailing, horizontalPadding)
-                        .accessibilityLabel(settingsManager.localizationManager.localizedString("close"))
                     }
                     .padding(.top, verticalPadding)
 
@@ -458,8 +442,8 @@ struct CapturedImagePreview: View {
                                 .fill(Color.white)
                                 .frame(width: closeButtonSize * 0.857, height: closeButtonSize * 0.857)
 
-                            Image(systemName: "chevron.backward")
-                                .font(.system(size: closeButtonSize * 0.4, weight: .bold))
+                            Image(systemName: "arrow.uturn.backward")
+                                .font(.system(size: closeButtonSize * 0.35, weight: .bold))
                                 .foregroundColor(.black)
                         }
                     }
