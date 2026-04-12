@@ -72,11 +72,9 @@ struct ExplanationView: View {
                         .frame(height: 16)
 
                     // タイトル
-                    Text("撮ってないよ、\n見てるだけ")
-                        .font(.system(size: 32, weight: .bold))
+                    Text("撮ってないよ、見てるだけ")
+                        .font(.system(size: 28, weight: .bold))
                         .foregroundColor(.white)
-                        .multilineTextAlignment(.leading)
-                        .lineSpacing(4)
                         .padding(.horizontal, contentPadding)
                         .padding(.bottom, 4)
 
