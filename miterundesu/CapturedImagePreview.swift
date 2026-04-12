@@ -458,13 +458,13 @@ struct CapturedImagePreview: View {
                                 .fill(Color.white)
                                 .frame(width: closeButtonSize * 0.857, height: closeButtonSize * 0.857)
 
-                            Image(systemName: "xmark")
+                            Image(systemName: "chevron.backward")
                                 .font(.system(size: closeButtonSize * 0.4, weight: .bold))
                                 .foregroundColor(.black)
                         }
                     }
                     .padding(.bottom, screenHeight * 0.025)
-                    .accessibilityLabel(settingsManager.localizationManager.localizedString("close"))
+                    .accessibilityLabel(settingsManager.localizationManager.localizedString("back"))
                     .accessibilityHint(settingsManager.localizationManager.localizedString("close_preview_hint"))
                 }
 
