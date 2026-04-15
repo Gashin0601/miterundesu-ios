@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// v1.1.0の新機能案内ビュー
+/// v1.2.0の新機能案内ビュー
 struct WhatsNewView: View {
     @ObservedObject var settingsManager: SettingsManager
     @ObservedObject private var whatsNewManager = WhatsNewManager.shared
@@ -28,7 +28,7 @@ struct WhatsNewView: View {
                         .font(.system(size: 32, weight: .bold))
                         .foregroundColor(.white)
 
-                    Text("v1.1.0")
+                    Text("v1.2.0")
                         .font(.system(size: 18, weight: .medium))
                         .foregroundColor(.white.opacity(0.8))
                 }
@@ -38,9 +38,9 @@ struct WhatsNewView: View {
 
                 // 新機能リスト
                 VStack(alignment: .leading, spacing: 20) {
-                    // 新機能1: 1倍ボタンの長押し
+                    // 新機能1: クイック起動 (Lock Screen Widget + Control Center)
                     FeatureRow(
-                        icon: "1.circle.fill",
+                        icon: "bolt.fill",
                         title: settingsManager.localizationManager.localizedString("whats_new_feature1_title"),
                         description: settingsManager.localizationManager.localizedString("whats_new_feature1_desc")
                     )

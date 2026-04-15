@@ -105,8 +105,8 @@ class LocalizationManager: ObservableObject {
         // What's New
         "whats_new_title": "新機能",
         "whats_new_close": "はじめる",
-        "whats_new_feature1_title": "1倍ボタンの長押し機能",
-        "whats_new_feature1_desc": "拡大中に1倍ボタンを長押しすると、一時的に1倍表示になります。ボタンを離すと元の倍率に戻ります。",
+        "whats_new_feature1_title": "クイック起動",
+        "whats_new_feature1_desc": "ロック画面ウィジェットやコントロールセンター（iOS 18以降）に「ミテルンデス」を追加して、どこからでもワンタップで起動できます。",
 
         // Press Mode
         "press_mode_about": "プレスモードについて",
@@ -370,8 +370,8 @@ class LocalizationManager: ObservableObject {
         // What's New
         "whats_new_title": "What's New",
         "whats_new_close": "Get Started",
-        "whats_new_feature1_title": "Long-Press 1x Button",
-        "whats_new_feature1_desc": "While zoomed in, long-press the 1x button to temporarily view at 1x. Release to return to your previous zoom level.",
+        "whats_new_feature1_title": "Quick Launch",
+        "whats_new_feature1_desc": "Add Miterundesu to your Lock Screen widget or Control Center (iOS 18+) for one-tap access from anywhere.",
 
         // Press Mode
         "press_mode_about": "About Press Mode",
