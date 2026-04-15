@@ -107,6 +107,8 @@ class LocalizationManager: ObservableObject {
         "whats_new_close": "はじめる",
         "whats_new_feature1_title": "クイック起動",
         "whats_new_feature1_desc": "ロック画面ウィジェットやコントロールセンター（iOS 18以降）に「ミテルンデス」を追加して、どこからでもワンタップで起動できます。",
+        "whats_new_feature2_title": "Siri・ショートカット対応",
+        "whats_new_feature2_desc": "「Hey Siri、ミテルンデスを開いて」で音声起動。ショートカットアプリから自動化や背面タップへの割り当ても可能になりました。",
 
         // Press Mode
         "press_mode_about": "プレスモードについて",
@@ -372,6 +374,8 @@ class LocalizationManager: ObservableObject {
         "whats_new_close": "Get Started",
         "whats_new_feature1_title": "Quick Launch",
         "whats_new_feature1_desc": "Add Miterundesu to your Lock Screen widget or Control Center (iOS 18+) for one-tap access from anywhere.",
+        "whats_new_feature2_title": "Siri & Shortcuts Support",
+        "whats_new_feature2_desc": "Say \"Hey Siri, open Miterundesu\" to launch by voice. You can also assign it to Back Tap or use it in Shortcuts automations.",
 
         // Press Mode
         "press_mode_about": "About Press Mode",

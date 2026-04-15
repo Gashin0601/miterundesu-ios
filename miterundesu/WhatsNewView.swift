@@ -44,6 +44,13 @@ struct WhatsNewView: View {
                         title: settingsManager.localizationManager.localizedString("whats_new_feature1_title"),
                         description: settingsManager.localizationManager.localizedString("whats_new_feature1_desc")
                     )
+
+                    // 新機能2: Siri・ショートカット対応
+                    FeatureRow(
+                        icon: "mic.circle.fill",
+                        title: settingsManager.localizationManager.localizedString("whats_new_feature2_title"),
+                        description: settingsManager.localizationManager.localizedString("whats_new_feature2_desc")
+                    )
                 }
                 .padding(.horizontal, 30)
 
