@@ -32,7 +32,12 @@ Pods/
 *.p12
 *.mobileprovision
 *.pem
+*.p8
 AuthKey_*.p8
+
+# asc CLI (App Store Connect) — local auth config may contain credentials
+.asc/config.json
+.asc/credentials
 
 # Environment
 .env
