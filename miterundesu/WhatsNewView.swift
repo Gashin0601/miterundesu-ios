@@ -43,12 +43,7 @@ struct WhatsNewView: View {
                         Text(settingsManager.localizationManager.localizedString("whats_new_headline"))
                             .font(.system(size: 22, weight: .bold))
                             .foregroundColor(.white)
-                            .fixedSize(horizontal: false, vertical: true)
-
-                        // サブ見出し
-                        Text(settingsManager.localizationManager.localizedString("whats_new_subheadline"))
-                            .font(.system(size: 17, weight: .medium))
-                            .foregroundColor(.white.opacity(0.9))
+                            .lineSpacing(4)
                             .fixedSize(horizontal: false, vertical: true)
 
                         // 変更点リスト
@@ -56,7 +51,7 @@ struct WhatsNewView: View {
                             BulletItem(text: settingsManager.localizationManager.localizedString("whats_new_bullet1"))
                             BulletItem(text: settingsManager.localizationManager.localizedString("whats_new_bullet2"))
                         }
-                        .padding(.top, 4)
+                        .padding(.top, 8)
 
                         Spacer(minLength: 20)
                     }

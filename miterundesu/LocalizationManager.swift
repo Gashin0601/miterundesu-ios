@@ -105,10 +105,9 @@ class LocalizationManager: ObservableObject {
         // What's New (v1.3.0)
         "whats_new_title": "新機能",
         "whats_new_close": "はじめる",
-        "whats_new_headline": "ミテルンデスのデザインが刷新されました。",
-        "whats_new_subheadline": "もっと手軽に使いやすく。",
-        "whats_new_bullet1": "説明画面ボタンが大きくなりました。",
-        "whats_new_bullet2": "シアターモードのデザインが変更に。より直感的にシアターモードのオンオフができます。",
+        "whats_new_headline": "ミテルンデスが、より見やすく、より使いやすく生まれ変わりました。",
+        "whats_new_bullet1": "「説明を見る」ボタンをより大きく",
+        "whats_new_bullet2": "シアターモードのデザインを一新。オン／オフがひと目でわかります",
 
         // Press Mode
         "press_mode_about": "プレスモードについて",
@@ -372,10 +371,9 @@ class LocalizationManager: ObservableObject {
         // What's New (v1.3.0)
         "whats_new_title": "What's New",
         "whats_new_close": "Get Started",
-        "whats_new_headline": "Miterundesu has a new design.",
-        "whats_new_subheadline": "Easier, more intuitive than ever.",
-        "whats_new_bullet1": "The explanation button is now larger and easier to tap.",
-        "whats_new_bullet2": "Theater Mode has been redesigned for more intuitive on/off switching.",
+        "whats_new_headline": "Miterundesu has been redesigned for better visibility and ease of use.",
+        "whats_new_bullet1": "The \"View Description\" button is now larger",
+        "whats_new_bullet2": "Theater Mode has a fresh new design — on/off at a glance",
 
         // Press Mode
         "press_mode_about": "About Press Mode",
