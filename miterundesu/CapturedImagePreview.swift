@@ -383,23 +383,8 @@ struct CapturedImagePreview: View {
 
             // 上部コントロール（オーバーレイ）
             VStack {
-                    HStack {
-                        // 左：残り時間表示
-                        Text(formattedRemainingTime)
-                            .font(.system(size: 14, weight: .medium, design: .monospaced))
-                            .foregroundColor(.white)
-                            .padding(.horizontal, horizontalPadding * 0.6)
-                            .padding(.vertical, verticalPadding * 0.8)
-                            .background(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .fill(Color.red.opacity(0.7))
-                            )
-                            .padding(.leading, horizontalPadding)
-                            .accessibilityLabel(spokenRemainingTime)
-
-                        Spacer()
-
-                        // 中央：説明を見るボタン
+                    ZStack {
+                        // 中央：説明を見るボタン（画面中央に固定）
                         Button(action: {
                             showExplanation = true
                         }) {
@@ -419,7 +404,22 @@ struct CapturedImagePreview: View {
                         }
                         .accessibilityLabel(settingsManager.localizationManager.localizedString("explanation"))
 
-                        Spacer()
+                        // 左：残り時間表示
+                        HStack {
+                            Text(formattedRemainingTime)
+                                .font(.system(size: 14, weight: .medium, design: .monospaced))
+                                .foregroundColor(.white)
+                                .padding(.horizontal, horizontalPadding * 0.6)
+                                .padding(.vertical, verticalPadding * 0.8)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(Color.red.opacity(0.7))
+                                )
+                                .padding(.leading, horizontalPadding)
+                                .accessibilityLabel(spokenRemainingTime)
+
+                            Spacer()
+                        }
                     }
                     .padding(.top, verticalPadding)
 
