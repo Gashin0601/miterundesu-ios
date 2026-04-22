@@ -14,8 +14,11 @@ struct ExplanationView: View {
     var body: some View {
         GeometryReader { geometry in
             let screenWidth = geometry.size.width
+            let screenHeight = geometry.size.height
             let horizontalPadding = screenWidth * 0.05  // 画面幅の5%
             let contentPadding = screenWidth * 0.06     // 画面幅の6%
+            let topPadding = screenHeight * 0.009
+            let bottomPadding = screenHeight * 0.009
 
             ZStack {
                 // 背景色
@@ -23,47 +26,45 @@ struct ExplanationView: View {
                     .ignoresSafeArea()
 
                 VStack(spacing: 0) {
-                    // 上部固定ヘッダー
-                    HStack {
-                        // 左：シアターモードトグル
-                        TheaterModeToggle(
-                            isTheaterMode: $settingsManager.isTheaterMode,
-                            onToggle: {},
-                            settingsManager: settingsManager
-                        )
-                        .padding(.leading, horizontalPadding)
-                        .layoutPriority(1)
-
-                        Spacer(minLength: 8)
-
-                        // 中央：ロゴ（スペースに応じて縮小可能）
+                    // 上部固定ヘッダー（ContentView / SettingsView と同じ ZStack 構成）
+                    ZStack {
+                        // 中央：ミテルンデスロゴ（画面中央に固定配置）
                         Image("Logo")
                             .resizable()
                             .scaledToFit()
-                            .frame(maxHeight: 20)
-                            .layoutPriority(0)
+                            .frame(maxHeight: 22)
+                            .accessibilityHidden(true)
 
-                        Spacer(minLength: 8)
+                        HStack {
+                            // 左：シアターモードトグル
+                            TheaterModeToggle(
+                                isTheaterMode: $settingsManager.isTheaterMode,
+                                onToggle: {},
+                                settingsManager: settingsManager
+                            )
+                            .padding(.leading, horizontalPadding)
 
-                        // 右：閉じるボタン（丸バツ）
-                        Button(action: {
-                            dismiss()
-                        }) {
-                            ZStack {
-                                Circle()
-                                    .fill(Color.white)
-                                    .frame(width: 44, height: 44)
-                                Image(systemName: "xmark")
-                                    .font(.system(size: 17, weight: .bold))
-                                    .foregroundColor(.black)
+                            Spacer()
+
+                            // 右：閉じるボタン（丸バツ）
+                            Button(action: {
+                                dismiss()
+                            }) {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color.white)
+                                        .frame(width: 44, height: 44)
+                                    Image(systemName: "xmark")
+                                        .font(.system(size: 17, weight: .bold))
+                                        .foregroundColor(.black)
+                                }
                             }
+                            .accessibilityLabel(settingsManager.localizationManager.localizedString("close"))
+                            .padding(.trailing, horizontalPadding)
                         }
-                        .accessibilityLabel(settingsManager.localizationManager.localizedString("close"))
-                        .padding(.trailing, horizontalPadding)
-                        .layoutPriority(1)
                     }
-                    .padding(.top, 8)
-                    .padding(.bottom, 8)
+                    .padding(.top, topPadding)
+                    .padding(.bottom, bottomPadding)
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
